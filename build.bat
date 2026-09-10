@@ -1,0 +1,1 @@
+g++ -std=c++17 -I include src/main.cpp src/Compressor.cpp src/Decompressor.cpp src/FrequencyCounter.cpp src/HuffmanTree.cpp -o build/HuffmanFileCompressor.exe
