@@ -23,6 +23,11 @@ std::string Compressor::compress(const std::string &inputFilePath)
     std::array<std::string, 256> codes;
     
     Frequency f = frequencyCounter.calculateFreq(inputFilePath);
+    if(f.uniqueBytes == 0)
+    {
+        std::cout<<"FILE IS EMPTY {compressor i/p check}";
+        return "";
+    }
     HuffmanNode* root = huffmanTree.generateTree(f);
     codes = huffmanTree.generateCodes(root);
 
@@ -46,6 +51,11 @@ std::string Compressor::compress(const std::string &inputFilePath)
         }
     }
 
+    const unsigned char magic [] = {'H', 'F', 'C', '1', 0xA7, 0x3D, 0x92, 0xE1};
+    outputFile.write(
+        reinterpret_cast<const char*> (magic),
+        sizeof(magic)
+    );
     
     std::string fileName;
 
