@@ -186,7 +186,7 @@ std::string Decompressor::decompress(const std::string &compressedFilePath)
 
         if(!compressedFile)
         {
-            std::cerr<<"INVALID FILE FORMAT {decompressed byte read}";
+            std::cerr<<"INVALID FILE FORMAT {decompressor byte read}";
             return "";
         }
 
@@ -194,6 +194,13 @@ std::string Decompressor::decompress(const std::string &compressedFilePath)
         {
             int bit = (packedByte>>(7-i)) & 1;
             (bit == 0) ? (curr = curr->left) : (curr = curr->right);
+
+            if(!curr)
+            {
+                std::cerr<<"INVALID HUFFMAN TREE {decompressor byte read}";
+                return "";
+            }
+            
             if(curr->left == NULL && curr->right == NULL)
             {
                 decompFile.put(curr->byte);
