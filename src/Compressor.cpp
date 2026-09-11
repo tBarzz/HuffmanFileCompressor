@@ -1,6 +1,7 @@
 #include "Compressor.h"
 #include "FrequencyCounter.h"
 #include "HuffmanTree.h"
+#include "MagicSign.h"
 #include<string>
 #include<array>
 #include<fstream>
@@ -25,7 +26,7 @@ std::string Compressor::compress(const std::string &inputFilePath)
     Frequency f = frequencyCounter.calculateFreq(inputFilePath);
     if(f.uniqueBytes == 0)
     {
-        std::cout<<"FILE IS EMPTY {compressor i/p check}";
+        std::cerr<<"FILE IS EMPTY {compressor i/p check}";
         return "";
     }
     HuffmanNode* root = huffmanTree.generateTree(f);
@@ -51,7 +52,6 @@ std::string Compressor::compress(const std::string &inputFilePath)
         }
     }
 
-    const unsigned char magic [] = {'H', 'F', 'C', '1', 0xA7, 0x3D, 0x92, 0xE1};
     outputFile.write(
         reinterpret_cast<const char*> (magic),
         sizeof(magic)

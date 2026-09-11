@@ -1,9 +1,11 @@
 #include "Decompressor.h"
 #include "HuffmanTree.h"
+#include "MagicSign.h"
 #include <fstream>
 #include <iostream>
 #include <array>
 #include <string>
+#include <algorithm>
 
 std::string Decompressor::decompress(const std::string &compressedFilePath)
 {
@@ -15,31 +17,79 @@ std::string Decompressor::decompress(const std::string &compressedFilePath)
         return "";
     }
 
+    unsigned char validate[sizeof(magic)];
+    compressedFile.read(
+        reinterpret_cast<char*> (validate),
+        sizeof(validate)
+    );
+    if(!compressedFile)
+    {
+        std::cerr<<"INVALID FILE FORMAT {decompressor header-m}";
+        return "";
+    }
+
+    if(!std::equal(
+        validate,
+        validate + sizeof(validate),
+        magic
+    ))
+    {
+        std::cerr<<"INVALID FILE FORMAT {decompressor header-mv}";
+        return "";
+    }
+
     uint32_t fileLength;
     compressedFile.read(
         reinterpret_cast<char*> (&fileLength),
         sizeof(fileLength)
     );
+    if(!compressedFile)
+    {
+        std::cerr<<"INVALID FILE FORMAT {decompress header -fl}";
+        return "";
+    }
 
     std::string fileName(fileLength, '\0');
     compressedFile.read(
         fileName.data(),
         fileLength
     );
+    if(!compressedFile)
+    {
+        std::cerr<<"INVALID FILE FORMAT {decompres header -fn}";
+        return "";
+    }
 
     uint64_t originalFileSize;
     compressedFile.read(
         reinterpret_cast<char*> (&originalFileSize),
         sizeof(originalFileSize)
     );
+    if(!compressedFile)
+    {
+        std::cerr<<"INVALID FILE FORMAT {decompress header -os}";
+        return "";
+    }
 
     int uniqueBytes;
     compressedFile.read(
         reinterpret_cast<char*> (&uniqueBytes),
         sizeof(uniqueBytes)
     );
+    if(!compressedFile)
+    {
+        std::cerr<<"INVALID FILE FORMAT {decompress header-ub}";
+        return "";
+    }
+    if(!(uniqueBytes>=1 && uniqueBytes<=256))
+    {
+        std::cerr<<"INVALID FILE FORMAT {decompress header-ubv}";
+        return "";
+    }
 
     uint64_t freq[256] = {};
+    int check[256] = {};
+    uint64_t new_size = 0;
     for(int i=0; i<uniqueBytes; i++)
     {
         unsigned char byte;
@@ -47,13 +97,40 @@ std::string Decompressor::decompress(const std::string &compressedFilePath)
             reinterpret_cast<char*>(&byte),
             sizeof(byte)
         );
+        if(!compressedFile)
+        {
+            std::cerr<<"INVALID FILE FORMAT {decompress header-b}";
+            return "";
+        }
+        if(check[byte] == 0) check[byte]++;
+        else
+        {
+            std::cerr<<"INVALID FILE FORMAT {decompress header-bv}";
+            return "";
+        }
         uint64_t f;
         compressedFile.read(
             reinterpret_cast<char*>(&f),
             sizeof(f)
         );
+        if(!compressedFile)
+        {
+            std::cerr<<"INVALID FILE FORMAT {decompress header-f}";
+            return "";
+        }
+        if(f==0)
+        {
+            std::cerr<<"INVALID FILE FORMAT {decompress header-fv}";
+            return "";
+        }
 
         freq[byte] = f;
+        new_size += f;
+    }
+    if(new_size != originalFileSize)
+    {
+        std::cerr<<"INVALID FILE FORMAT {decompress header -sv}";
+        return "";
     }
 
     Frequency freqObj{};
@@ -83,6 +160,11 @@ std::string Decompressor::decompress(const std::string &compressedFilePath)
 
     HuffmanTree huffTree;
     HuffmanNode* root = huffTree.generateTree(freqObj);
+    if(root == NULL)
+    {
+        std::cerr<<"INVALID FILE FORMAT {decompressor tree}";
+        return "";
+    }
 
     HuffmanNode* curr = root;
     if(curr->left == NULL && curr->right == NULL)
@@ -101,6 +183,13 @@ std::string Decompressor::decompress(const std::string &compressedFilePath)
             reinterpret_cast<char*> (&packedByte),
             sizeof(packedByte)
         );
+
+        if(!compressedFile)
+        {
+            std::cerr<<"INVALID FILE FORMAT {decompressed byte read}";
+            return "";
+        }
+
         for(int i=0; i<8 && decompressedSize < originalFileSize; i++)
         {
             int bit = (packedByte>>(7-i)) & 1;
