@@ -6,19 +6,25 @@
 #include <cstdio>
 #include <limits>
 
-int main()
+int main(int argc, char* argv[])
 {
+    if(argc != 3)
+    {
+        std::cerr<<"INVALID INPUT {main i/p}";
+        return 1;
+    }
     int choice;
-    std::cout<<"\n1. Compression\n2. Decompression\n";
-    std::cout<<"\nEnter your choice: ";
-    std::cin>>choice;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    //std::cout<<"\n1. Compression\n2. Decompression\n";
+    //std::cout<<"\nEnter your choice: ";
+    //std::cin>>choice;
+    //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    choice = std::stoi(argv[1]);
     if(choice == 1)
     {
         std::string inputFilePath;
-        std::cout<<"\nEnter the Input File Path: ";
-        std::getline(std::cin, inputFilePath);
-
+        //std::cout<<"\nEnter the Input File Path: ";
+        //std::getline(std::cin, inputFilePath);
+        inputFilePath = argv[2];
         std::string compressedFilePath;
         Compressor c;
         compressedFilePath = c.compress(inputFilePath);
@@ -82,8 +88,9 @@ int main()
     else if(choice == 2)
     {
         std::string compressedFilePath;
-        std::cout<<"\nEnter the Compressed File Path: ";
-        std::getline(std::cin, compressedFilePath);
+        //std::cout<<"\nEnter the Compressed File Path: ";
+        //std::getline(std::cin, compressedFilePath);
+        compressedFilePath = argv[2];
 
         Decompressor d;
         std::string decompFilePath = d.decompress(compressedFilePath);
@@ -94,5 +101,10 @@ int main()
         }
         std::cout<<"DECOMPRESSION SUCCESSFUL\nDecompressed File created in same Directory as provided Compressed File";
         return 0;
+    }
+    else
+    {
+        std::cerr<<"UNSUPPORTED OPERATION {main i/p}";
+        return 1;
     }
 }
