@@ -75,7 +75,8 @@ int main(int argc, char* argv[])
         {
             input.close();
             decomp.close();
-            std::cout<<"COMPRESSION SUCCESSFUL\nCompressed File created in same Directory as provided Input File";
+            //std::cout<<"COMPRESSION SUCCESSFUL\nCompressed File created in same Directory as provided Input File\n";
+            std::cout<<compressedFilePath;
             std::remove(decompFilePath.c_str());
             return 0;
         }
@@ -99,7 +100,8 @@ int main(int argc, char* argv[])
             std::cout<<"DECOMPRESSION FAILED {main} {decompression-module}";
             return 1;
         }
-        std::cout<<"DECOMPRESSION SUCCESSFUL\nDecompressed File created in same Directory as provided Compressed File";
+        //std::cout<<"DECOMPRESSION SUCCESSFUL\nDecompressed File created in same Directory as provided Compressed File\n";
+        std::cout<<decompFilePath;
         return 0;
     }
     else
