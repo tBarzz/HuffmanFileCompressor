@@ -35,7 +35,7 @@ app.get("/", (req,res) => {
 
 app.post("/compress", upload.single("file"), (req,res) => {
     const inputFilePath = req.file.path;
-    execFile(cppExecutable, [1,inputFilePath], (error, stdout) => {
+    execFile(cppExecutable, [1, inputFilePath], (error, stdout) => {
         if(error){
             console.error(error);
             return res.status(500).send("Compression Failed.");
@@ -43,6 +43,19 @@ app.post("/compress", upload.single("file"), (req,res) => {
         const compressedFilePath = stdout.trim();
         console.log("C++ compression completed.");
         res.download(compressedFilePath);
+    })
+});
+
+app.post("/decompress", upload.single("file"), (req,res) => {
+    const inputFilePath = req.file.path;
+    execFile(cppExecutable, [2 ,inputFilePath], (error, stdout) => {
+        if(error){
+            console.error(error);
+            return res.status(500).send("Decompression Failed.");
+        }
+        const decompFilePath = stdout.trim();
+        console.log("C++ decompression completed.");
+        res.download(decompFilePath);
     })
 });
 
