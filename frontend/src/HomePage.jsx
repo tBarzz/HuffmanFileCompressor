@@ -1,6 +1,7 @@
 import { useState } from "react";
 import FileDropArea from "./components/FileDropArea";
 import OperationsButtons from "./components/OperationsButtons"
+import DownloadButton from "./components/DownloadButton";
 
 function HomePage(){
     const [selectedFile, setSelectedFile] = useState(null);
@@ -35,8 +36,11 @@ function HomePage(){
             )}
 
             {status === "success" && (
-                <div className = "DownloadButton">
-                    DOWNLOAD
+                <div className = "Download">
+                    <DownloadButton
+                        resFile = {resFile}
+                        resFileName = {resFileName}
+                    />
                 </div>
             )}
 
