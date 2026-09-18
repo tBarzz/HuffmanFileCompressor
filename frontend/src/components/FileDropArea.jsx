@@ -1,9 +1,7 @@
 import { useRef } from "react";
-import { useState } from "react";
 
-function FileDropArea(){
+function FileDropArea({selectedFile, setSelectedFile}){
     const fileInputRef = useRef(null);
-    const [selectedFile, setSelectedFile] = useState(null);
     return(
         <div className = "fileDropArea">
 
