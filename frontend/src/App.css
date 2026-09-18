@@ -15,9 +15,19 @@
   font-size: xx-large;
   font-style: oblique;
   color: rgb(31, 43, 1);
+
+  text-align: center;
+  max-width: 90%;
+  overflow-wrap: anywhere;
 }
 .collectionBox:hover {
   background: rgba(0,0,0,0.25);
+}
+.collectionBox p.placeHolder {
+  color: rgb(31, 43, 1);
+}
+.collectionBox p.selectedFile {
+  color: rgba(29, 202, 173)
 }
 .fileDropArea {
   position: relative;
@@ -40,6 +50,9 @@
 .fileDropArea button:hover {
   background: rgba(218, 85, 8,0.75);
   color: black;
+}
+.fileDropArea input {
+  display: none;
 }
 .DropBox {
   display: flex;
