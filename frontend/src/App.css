@@ -176,3 +176,52 @@
   color: ghostwhite;
   transform: scale(1.05);
 }
+
+.ProcessBar {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.ProcessBarParent {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 50px;
+}
+.bar1,
+.bar2,
+.bar3,
+.bar4,
+.bar5,
+.bar6,
+.bar7,
+.bar8,
+.bar9,
+.bar10 {
+    width: 8px;
+    height: 16px;
+    background: rgb(105,65,131);
+    border-radius: 5px;
+}
+@keyframes processBarWave {
+  0% {
+    height: 10px;
+  }
+  50% {
+    height: 45px;
+  }
+  100% {
+    height: 10px;
+  }
+}
+.bar1 { animation: processBarWave 1s ease-in-out infinite; }
+.bar2 { animation: processBarWave 1.3s ease-in-out infinite; }
+.bar3 { animation: processBarWave 1.15s ease-in-out infinite; }
+.bar4 { animation: processBarWave 1s ease-in-out infinite; }
+.bar5 { animation: processBarWave 0.9s ease-in-out infinite; }
+.bar6 { animation: processBarWave 1.1s ease-in-out infinite; }
+.bar7 { animation: processBarWave 0.8s ease-in-out infinite; }
+.bar8 { animation: processBarWave 0.9s ease-in-out infinite; }
+.bar9 { animation: processBarWave 0.7s ease-in-out infinite; }
+.bar10 { animation: processBarWave 1s ease-in-out infinite; }

@@ -1,5 +1,11 @@
 function OperationsButtons({selectedFile, setResFile, setResFileName, setFileError, setStatus}){
 
+    async function ensureMinProcessTime(startTime) {
+        const elapsed = Date.now() - startTime;
+        if(elapsed < 500){
+            await new Promise(resolve => setTimeout(resolve, 500 - elapsed));
+        }
+    }
     async function handleCompress() {
         const formData = new FormData();
 
@@ -9,6 +15,8 @@ function OperationsButtons({selectedFile, setResFile, setResFileName, setFileErr
         setResFileName(null);
         setFileError(null);
         setStatus("processing");
+
+        const startTime = Date.now();
         
         try {
             const response = await fetch("/compress", {
@@ -16,11 +24,15 @@ function OperationsButtons({selectedFile, setResFile, setResFileName, setFileErr
                 body: formData
             });
             if(!response.ok){
+                await ensureMinProcessTime(startTime);
                 setFileError("Compression Failed.");
                 setStatus("failure");
             }
             else{
                 const blob = await response.blob();
+
+                await ensureMinProcessTime(startTime);
+
                 const contentDisposition = response.headers.get("Content-Disposition");
                 const parts = contentDisposition.split("filename=");
                 const fileName = parts[1].slice(1,-1);
@@ -30,6 +42,7 @@ function OperationsButtons({selectedFile, setResFile, setResFileName, setFileErr
             }
         }
         catch{
+            await ensureMinProcessTime(startTime);
             setFileError("Network Error.");
             setStatus("failure");
         }
@@ -44,6 +57,8 @@ function OperationsButtons({selectedFile, setResFile, setResFileName, setFileErr
         setResFileName(null);
         setFileError(null);
         setStatus("processing");
+
+        const startTime = Date.now();
         
         try {
             const response = await fetch("/decompress", {
@@ -51,11 +66,15 @@ function OperationsButtons({selectedFile, setResFile, setResFileName, setFileErr
                 body: formData
             });
             if(!response.ok){
+                await ensureMinProcessTime(startTime);
                 setFileError("Decompression Failed.");
                 setStatus("failure");
             }
             else{
                 const blob = await response.blob();
+
+                await ensureMinProcessTime(startTime);
+
                 const contentDisposition = response.headers.get("Content-Disposition");
                 const parts = contentDisposition.split("filename=");
                 const fileName = parts[1].slice(1,-1);
@@ -65,6 +84,7 @@ function OperationsButtons({selectedFile, setResFile, setResFileName, setFileErr
             }
         }
         catch{
+            await ensureMinProcessTime(startTime);
             setFileError("Network Error.");
             setStatus("failure");
         }

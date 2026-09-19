@@ -2,6 +2,7 @@ import { useState } from "react";
 import FileDropArea from "./components/FileDropArea";
 import OperationsButtons from "./components/OperationsButtons"
 import DownloadButton from "./components/DownloadButton";
+import ProcessBarAnimation from "./components/ProcessBarAnimation";
 
 function HomePage(){
     const [selectedFile, setSelectedFile] = useState(null);
@@ -31,7 +32,7 @@ function HomePage(){
 
             {status === "processing" && (
                 <div className = "ProcessBar">
-                    PROCESS BAR
+                    <ProcessBarAnimation />
                 </div>
             )}
 
