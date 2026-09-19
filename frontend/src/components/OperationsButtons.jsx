@@ -2,8 +2,8 @@ function OperationsButtons({selectedFile, setResFile, setResFileName, setFileErr
 
     async function ensureMinProcessTime(startTime) {
         const elapsed = Date.now() - startTime;
-        if(elapsed < 500){
-            await new Promise(resolve => setTimeout(resolve, 500 - elapsed));
+        if(elapsed < 1500){
+            await new Promise(resolve => setTimeout(resolve, 1500 - elapsed));
         }
     }
     async function handleCompress() {

@@ -134,6 +134,7 @@
 
   display: flex;
   align-items: center;
+  justify-content: center;
 
   border: 1px solid rgba(0,0,0, 0.1);
   background: rgba(0,0,0,0.1);
@@ -225,3 +226,87 @@
 .bar8 { animation: processBarWave 0.9s ease-in-out infinite; }
 .bar9 { animation: processBarWave 0.7s ease-in-out infinite; }
 .bar10 { animation: processBarWave 1s ease-in-out infinite; }
+
+.ErrorMessage {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+}
+.errorDisplay {
+  width: 225px;
+  height: 40px;
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0,0,0, 0.5),
+    rgba(0,0,0,0)
+  );
+  
+  border-radius: 5px;
+
+  color: rgb(245, 4, 52);
+  font-size: 20px;
+
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.AppName {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 25px;
+  color: rgba(245, 222, 179, 0.507);
+
+  font-style: oblique;
+}
+.H,
+.F,
+.C {
+  background: linear-gradient(
+    180deg,
+    #b84a00 0%,
+    #ffb347 50%,
+    #b84a00 100%
+  );
+
+  background-size: 100% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+
+  font-weight: 800;
+  font-style: normal;
+}
+.H {
+  background-position: 0 0;
+}
+.F {
+ background-position: 0 50%;
+}
+.C {
+  background-position: 0 100%;
+}
+
+.AppDescription {
+  position: absolute;
+  top: 125px;
+  left: 15px;
+
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 700;
+
+  text-shadow: 0 0 6px rgba(45, 80, 15, 0.6);
+
+  background: linear-gradient(
+    90deg,
+    rgba(238, 197, 108, 0.7),
+    rgba(136, 112, 61, 0.7),
+    rgba(238, 197, 108, 0.7)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color:transparent;
+}

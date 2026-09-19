@@ -3,6 +3,7 @@ import FileDropArea from "./components/FileDropArea";
 import OperationsButtons from "./components/OperationsButtons"
 import DownloadButton from "./components/DownloadButton";
 import ProcessBarAnimation from "./components/ProcessBarAnimation";
+import ErrorDisplay from "./components/ErrorDisplay";
 
 function HomePage(){
     const [selectedFile, setSelectedFile] = useState(null);
@@ -12,6 +13,16 @@ function HomePage(){
     const [status, setStatus] = useState("idle");
     return(
         <div className = "HomePage">
+
+            <div className = "AppName">
+                <span className="H">H</span>uffman<br />
+                <span className="F">F</span>ile<br />
+                <span className="C">C</span>ompressor
+            </div>
+
+            <div className = "AppDescription">
+                Fast, simple and efficient file compression and decompression
+            </div>
 
             <div className = "DropBox">
                 <FileDropArea
@@ -47,7 +58,9 @@ function HomePage(){
 
             {status === "failure" && (
                 <div className = "ErrorMessage">
-                    ERROR MESSAGE
+                    <ErrorDisplay 
+                        fileError = {fileError}
+                    />
                 </div>
             )}
         </div>
