@@ -310,3 +310,23 @@
   -webkit-background-clip: text;
   color:transparent;
 }
+
+.DataAnimation {
+  margin-top: -300px;
+  margin-left: 1400px;
+}
+.RHSAnimation {
+  position: relative;
+  width: 400px;
+  height: 400px;
+}
+.point {
+  width: 8px;
+  height: 8px;
+  background: rgb(105,65,131);
+  border-radius: 50%;
+
+  position: absolute;
+
+  transition: 0.5s;
+}

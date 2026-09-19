@@ -4,6 +4,7 @@ import OperationsButtons from "./components/OperationsButtons"
 import DownloadButton from "./components/DownloadButton";
 import ProcessBarAnimation from "./components/ProcessBarAnimation";
 import ErrorDisplay from "./components/ErrorDisplay";
+import RHSAnimation from "./components/RHSAnimation";
 
 function HomePage(){
     const [selectedFile, setSelectedFile] = useState(null);
@@ -39,6 +40,10 @@ function HomePage(){
                     setFileError = {setFileError}
                     setStatus = {setStatus}
                 />
+            </div>
+
+            <div className = "DataAnimation">
+                <RHSAnimation />
             </div>
 
             {status === "processing" && (
