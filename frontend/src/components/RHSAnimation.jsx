@@ -3,41 +3,38 @@ import { useEffect, useState } from "react";
 function randomCoordinates(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) +min;
 }
-function generatePositions(pointCount) {
-    return Array.from({length : pointCount}, () => ({
-        scatteredX: randomCoordinates(20, 380),
-        scatteredY: randomCoordinates(20, 380),
-
-        clusteredX: randomCoordinates(150, 250),
-        clusteredY: randomCoordinates(150, 250)
-    }));
+function clusteredCoordinates(center, radius, angle, axis){
+    if(axis === 0)
+        return center + radius * Math.cos(angle);
+    return center + radius * Math.sin(angle);
 }
-const pointCount = 200;
+function generatePositions(pointCount) {
+    
+    const centerX = 1600;
+    const centerY = 400;
+    return Array.from({length : pointCount}, () => {
+
+        const angle = Math.random() * 2 * Math.PI
+        const radius = randomCoordinates(75,100)
+
+        return {
+            scatteredX: randomCoordinates(20, window.innerWidth - 20),
+            scatteredY: randomCoordinates(20, window.innerHeight - 20),
+
+            clusteredX: clusteredCoordinates(centerX, radius, angle, 0),
+            clusteredY: clusteredCoordinates(centerY, radius, angle, 1)
+        }
+    });
+}
+const pointCount = 500;
 const positions = generatePositions(pointCount);
 
-function RHSAnimation() {
+function RHSAnimation({clustered, setIsHovered}) {
 
-    const [clustered, setClustered] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
-
-    useEffect(() => {
-
-        if(!isHovered) return;
-
-        setClustered(prev => !prev);
-
-        const interval = setInterval(() => {
-            setClustered(prev => !prev);
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [isHovered]);
+    
     
     return(
-        <div className = "RHSAnimation"
-            onMouseEnter={ () => setIsHovered(true) }
-            onMouseLeave={ () => setIsHovered(false) }
-        >
+        <div className = "RHSAnimation">
             {Array.from({length:pointCount},(_,i) => (
                 <div 
                     className = "point" 
@@ -48,6 +45,12 @@ function RHSAnimation() {
                     }}></div>
                     
             ))}
+
+            <div className = "CoreAnimation">
+                <div className="purpleCore"></div>
+                <div className="greenCore"></div>
+                <div className="orangeCore"></div>
+            </div>
         </div>
     );
 }
